@@ -3,7 +3,7 @@ import java.util.*;
 public class StringCalculator {
 
     public int add(String numbers) {
-        if (numbers.isEmpty()) {
+        if (numbers == null || numbers.isEmpty()) {
             return 0;
         }
         
@@ -20,13 +20,17 @@ public class StringCalculator {
         List<Integer> negatives = new ArrayList<>();
         
         for (String num : numberArray) {
-            if (!num.isEmpty()) {
-                int number = Integer.parseInt(num);
-                if (number < 0) {
-                    negatives.add(number);
-                }
-                if (number <= 1000) {
-                    sum += number;
+            if (!num.trim().isEmpty()) {
+                try {
+                    int number = Integer.parseInt(num.trim());
+                    if (number < 0) {
+                        negatives.add(number);
+                    }
+                    if (number <= 1000) {
+                        sum += number;
+                    }
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("Invalid number: " + num);
                 }
             }
         }
@@ -46,14 +50,19 @@ public class StringCalculator {
         Scanner scanner = new Scanner(System.in);
         StringCalculator calc = new StringCalculator();
         
-        System.out.print("Enter numbers: ");
-        String input = scanner.nextLine();
-        
-        try {
-            int result = calc.add(input);
-            System.out.println("Result: " + result);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+        System.out.print("Enter numbers (or type 'exit' to quit): ");
+        while (scanner.hasNextLine()) {
+            String input = scanner.nextLine();
+            if ("exit".equalsIgnoreCase(input.trim())) {
+                break;
+            }
+            try {
+                int result = calc.add(input);
+                System.out.println("Result: " + result);
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+            System.out.print("Enter numbers (or type 'exit' to quit): ");
         }
         
         scanner.close();
