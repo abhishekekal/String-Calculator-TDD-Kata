@@ -19,7 +19,17 @@ public class StringCalculator {
         int sum = 0;
         List<Integer> negatives = new ArrayList<>();
         
-       
+        for (String num : numberArray) {
+            if (!num.isEmpty()) {
+                int number = Integer.parseInt(num);
+                if (number < 0) {
+                    negatives.add(number);
+                }
+                if (number <= 1000) {
+                    sum += number;
+                }
+            }
+        }
         
         if (!negatives.isEmpty()) {
             throw new IllegalArgumentException("Negative numbers not allowed: " + negatives);
